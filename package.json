@@ -1,0 +1,10 @@
+{
+    "name":"activitystreams_populator",
+    "version":"0.0.1",
+    "main":"bin/index.js",
+    "dependencies":{
+        "async":"latest",
+        "commander":"latest",
+        "request":"latest"
+    }
+}
