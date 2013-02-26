@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript"
+            src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
+
+    <script>
+        gadgets.util.registerOnLoadHandler(function () {
+            opensocial.data.getDataContext().registerListener('org.opensocial.ee.context', function (key) {
+                var context = opensocial.data.getDataContext().getDataSet(key);
+                initGadget(context);
+            });
+        });
+
+        var data = {
+            "jane.doe":{
+                "name":"Jane Doe",
+                "week":"February 18th",
+                "hours":[
+                    {"worked":8},
+                    {"worked":8},
+                    {"worked":8},
+                    {"worked":8},
+                    {"worked":8}
+                ]
+            },
+            "john.doe":{
+                "name":"John Doe",
+                "week":"February 18th",
+                "hours":[
+                    {"worked":8},
+                    {"worked":8},
+                    {"worked":8},
+                    {"worked":8},
+                    {"class":"text-error", "worked":0}
+                ]
+            }
+        }
+
+        var targets = {
+            "john.doe": {
+                "url":"http://localhost:8080/portal/app/people/john.doe",
+                "objectType":"person",
+                "id":"john.doe",
+                "image":{
+                    "url":"http://example.org/canonical/image",
+                    "width":250,
+                    "height":250
+                }
+            },
+            "jane.doe": {
+                "url":"http://localhost:8080/portal/app/people/jane.doe",
+                "objectType":"person",
+                "id":"jane.doe",
+                "image":{
+                    "url":"http://example.org/canonical/image",
+                    "width":250,
+                    "height":250
+                }
+            }
+        }
+
+        var actions = {
+            "approve":{
+
+            },
+            "deny":{
+
+            }
+        }
+
+        var activity = {
+            "published":"2013-02-25T15:06:00Z",
+            "generator":{
+                "url":"http://example.org/activities-app"
+            },
+            "provider":{
+                "url":"http://example.org/activity-stream"
+            },
+            "actor":{
+                "url":"http://localhost:8080/portal/app/people/canonical",
+                "objectType":"person",
+                "id":"canonical",
+                "image":{
+                    "url":"http://example.org/canonical/image",
+                    "width":250,
+                    "height":250
+                }
+            },
+            "verb":"submit",
+            "object":{
+                "objectType":"page"
+            }
+        }
+
+        function initGadget(context) {
+            var workData = data[context.employee];
+            var template = Handlebars.compile($('#template').html());
+            $('#schedule').html(template(workData));
+            $('#schedule').slideDown('fast');
+            $('#approve').click(function () {
+                postActivity('approve', context);
+            });
+            $('#reject').click(function () {
+                $('#justification').fadeIn('fast');
+                $('#justification textarea').focus();
+            });
+            $('#justification textarea').keypress(function (e) {
+                if (e.which == 13) {
+                    postActivity('deny', context);
+                }
+            })
+        }
+
+        function postActivity(action, context) {
+            var a = activity;
+            a.verb = action;
+            a.target = targets[context.employee];
+            a.content = "Canonical has "+action=='approve'?'approved':'rejected'+' '+data[context.employee].name+"'s timecard";
+
+            console.log(a);
+
+            var url = 'http://localhost:8080/rest/activitystreams/canonical';
+
+            var params = {};
+            params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+            params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+            params[gadgets.io.RequestParameters.POST_DATA] = a;
+            gadgets.io.makeRequest(url, function(){
+                gadgets.views.close();
+            }, params);
+        }
+    </script>
+    <script id="template" type="text/handlebars">
+        <h4>{{name}}</h4>
+
+        <p>{{week}}</p>
+        <table class="table table-condensed table-bordered table-hover">
+            <thead>
+            <tr>
+                <td>M</td>
+                <td>T</td>
+                <td>W</td>
+                <td>Th</td>
+                <td>F</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {{#each hours}}
+                <td class="{{class}}">{{worked}}</td>
+                {{/each}}
+            </tr>
+            </tbody>
+        </table>
+    </script>
+    <style>
+        textarea {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="navbar navbar-static-top navbar-inverse">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Clarity Timesheet Management</a>
+        </div>
+    </div>
+    <div id="schedule" class="hide">
+
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <button id="approve" class="btn btn-success">Approve</button>
+    <button id="reject" class="btn btn-danger pull-right">Reject</button>
+    <div id="justification" class="hide">
+        <hr/>
+        Reason:<br/>
+        <textarea></textarea>
+    </div>
+
+</div>
+</body>
+</html>
