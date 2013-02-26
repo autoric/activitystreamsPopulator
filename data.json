@@ -160,7 +160,7 @@
         "actor":{
             "url":"http://localhost:8080/portal/app/people/canonical",
             "objectType":"person",
-            "id":"mario.rossi",
+            "id":"canonical",
             "image":{
                 "url":"http://example.org/canonical/image",
                 "width":250,
