@@ -1,0 +1,92 @@
+[
+    {
+        "published":"2013-02-25T15:05:00Z",
+        "generator":{
+            "url":"http://example.org/activities-app"
+        },
+        "provider":{
+            "url":"http://example.org/activity-stream"
+        },
+        "actor":{
+            "url":"http://localhost:8080/portal/app/people/jane.doe",
+            "objectType":"person",
+            "id":"jane.doe",
+            "image":{
+                "url":"http://example.org/canonical/image",
+                "width":250,
+                "height":250
+            }
+        },
+        "content":"Jane Doe has submitted her timesheet for approval.",
+        "verb":"submit",
+        "object":{
+            "objectType":"page"
+        },
+        "openSocial":{
+            "embed":{
+                "gadget":"http://localhost:80/timesheets/gadget.xml",
+                "preferredExperience":{
+                    "display":{
+                        "type":"text",
+                        "label":"View timesheet",
+                        "title":"Click to view timesheet"
+                    },
+                    "target":{
+                        "view":"embedded",
+                        "viewTarget":"sidebar"
+                    }
+                },
+                "context":{
+                    "employee":"jane.doe",
+                    "weekOf":"2/18"
+                }
+            }
+        }
+    },
+    {
+        "published":"2013-02-25T15:05:00Z",
+        "generator":{
+            "url":"http://example.org/activities-app"
+        },
+        "provider":{
+            "url":"http://example.org/activity-stream"
+        },
+        "actor":{
+            "url":"http://localhost:8080/portal/app/people/john.doe",
+            "objectType":"person",
+            "id":"john.doe",
+            "image":{
+                "url":"http://example.org/canonical/image",
+                "width":250,
+                "height":250
+            }
+        },
+        "content":"John Doe has submitted his timesheet for approval.",
+        "verb":"submit",
+        "object":{
+            "objectType":"page"
+        },
+        "openSocial":{
+            "embed":{
+                "gadget":"http://localhost:80/timesheets/gadget.xml",
+                "preferredExperience":{
+                    "display":{
+                        "type":"text",
+                        "label":"View timesheet",
+                        "title":"Click to view timesheet"
+                    },
+                    "target":{
+                        "view":"embedded",
+                        "viewTarget":"sidebar"
+                    }
+                },
+                "context":{
+                    "employee":"john.doe",
+                    "weekOf":"2/18"
+                }
+            }
+        }
+    }
+]
+
+
