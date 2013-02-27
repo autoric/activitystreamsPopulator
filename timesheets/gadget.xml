@@ -19,6 +19,7 @@
 -->
 <Module>
     <ModulePrefs title="Timesheet Gadget" width="700" scrolling="true">
+        <Require feature="osapi"/>
         <Require feature="dynamic-height"/>
         <Require feature="embedded-experiences"/>
         <Require feature="open-views"/>
